@@ -7,12 +7,12 @@ import (
 	"log"
 	"strings"
 
+	"github.com/cdarne/goblet/goblet"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/seedboxtech/goblet/goblet"
 )
 
 func main() {
-	cnf, err := goblet.LoadDBConfig()
+	cnf, err := goblet.LoadDBConfig("db/config.json")
 	if err != nil {
 		log.Fatalln(err)
 	}

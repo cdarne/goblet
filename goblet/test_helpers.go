@@ -11,13 +11,15 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+var DBConfigFilepath = "../db/config.json"
+
 type dbConfig struct {
 	User, Password, Protocol, Host, Database string
 	Port                                     int
 }
 
-func LoadDBConfig() (*dbConfig, error) {
-	data, err := ioutil.ReadFile("db/config.json")
+func LoadDBConfig(filePath string) (*dbConfig, error) {
+	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("Could not read the DB config file: %s\n", err))
 	}
@@ -31,7 +33,7 @@ func LoadDBConfig() (*dbConfig, error) {
 }
 
 func GetTestDB() gorm.DB {
-	cnf, err := LoadDBConfig()
+	cnf, err := LoadDBConfig(DBConfigFilepath)
 	So(err, ShouldBeNil)
 	db, err := gorm.Open("mysql", fmt.Sprintf("%s:%s@%s(%s:%d)/%s", cnf.User, cnf.Password, cnf.Protocol, cnf.Host, cnf.Port, cnf.Database))
 	So(err, ShouldBeNil)
